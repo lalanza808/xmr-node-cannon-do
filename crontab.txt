@@ -1,0 +1,4 @@
+HOME=/home/xmrcannon
+
+*/10 * * * * sh -c "cd ~/xmrcannon; ./bin/cmd launch_funded_operations | tee -a data/launch_funded_operations.log"
+0 */8 * * * sh -c "cd ~/xmrcannon; ./bin/cmd process_payouts | tee -a data/process_payouts.log"

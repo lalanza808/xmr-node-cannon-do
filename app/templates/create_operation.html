@@ -1,0 +1,37 @@
+<!DOCTYPE HTML>
+<html>
+
+	{% include 'includes/head.html' %}
+
+	<body>
+
+  	{% include 'includes/header.html' %}
+
+  	<section class="hero is-primary">
+  		<div class="hero-body">
+        <div class="container center">
+					<h1>Prepare for Launch</h1>
+					<p>Before we launch a node into orbit, you must provide some details; a codename for the launch and the region you'd like to launch into.</p>
+  				<form method="post" action="">
+						{{ form.csrf_token }}
+						{{ form.codename }}
+						{{ form.region }}
+	          {{ form.submit }}
+						{% if form.errors %}
+						<hr>
+						<h2>Form Errors</h2>
+						<ol>
+							{% for field, errors in form.errors.items() %}
+									<li><strong>{{ field }}</strong>: {{ ', '.join(errors) }}</li>
+							{% endfor %}
+						</ol>
+						{% endif %}
+					</form>
+        </div>
+  		</div>
+  	</section>
+
+  	{% include 'includes/footer.html' %}
+
+	</body>
+</html>

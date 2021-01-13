@@ -1,0 +1,33 @@
+DB_PASS=__youmakethisup__
+DB_USER=nodecannon
+DB_NAME=nodecannon
+DB_HOST=localhost
+
+XMR_WALLET_PATH=/data/xmr-wallet
+XMR_WALLET_PASS=__youmakethisup__
+XMR_WALLET_RPC_USER=nodecannon
+XMR_WALLET_RPC_PASS=__youmakethisup__
+XMR_WALLET_RPC_HOST=localhost
+XMR_WALLET_RPC_PORT=9990
+XMR_WALLET_RPC_PROTO=http
+XMR_WALLET_RPC_ENDPOINT=$XMR_WALLET_RPC_PROTO://$XMR_WALLET_RPC_HOST:$XMR_WALLET_RPC_PORT
+
+# Stagenet or Mainnet?
+XMR_DAEMON_URI=http://stagenet.xmr-tw.org:38081
+# XMR_DAEMON_URI=http://singapore.node.xmr.pm:18089
+
+SITE_NAME=XMR Node Cannon
+SECRET_KEY=__youmakethisup__
+SERVER_NAME=localhost:5000
+PAYOUT_ADDRESS=__yougeneratethisinanewwallet__
+PAYOUT_FREQUENCY=6
+ADMIN_EMAIL=__you@yourdomain.com__
+STATS_TOKEN=__youmakethisup__
+LAUNCHPAD_ENABLED=1
+
+DO_TOKEN=__apitokenyougenerated__
+DO_SSH_KEY=__sshkeyidyouuploaded__
+DO_DROPLET_IMAGE=ubuntu-20-04-x64
+DO_DROPLET_SIZE=s-2vcpu-2gb
+DO_DROPLET_STORAGE_GB=120
+DO_DOMAIN=__yourxmrcannon.net__

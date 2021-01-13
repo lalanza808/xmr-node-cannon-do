@@ -1,0 +1,65 @@
+<!DOCTYPE HTML>
+<html>
+
+	{% include 'includes/head.html' %}
+
+	<body>
+
+  	{% include 'includes/header.html' %}
+
+  	<section class="hero is-dark">
+  		<div class="hero-body">
+        <div class="container center">
+					{% if token %}
+	          <h1>Paid Ops</h1>
+						<br />
+						{% if ops %}
+							<table class="table center">
+		            <tr>
+		              <th>Date</th>
+		              <th>Codename</th>
+									<th>XMR Account</th>
+									<th>Droplet ID</th>
+		              <th>Volume ID</th>
+		              <th>Balances</th>
+		            </tr>
+		            {% for op in ops | sort(attribute='create_date', reverse=True) %}
+								{% set balances = op.get_balances() %}
+								{% set unlocked = balances['unlocked'] | from_atomic_xmr %}
+								{% set locked = (balances['balance'] - balances['unlocked']) | from_atomic_xmr %}
+								{% if balances['balance'] > 0 %}
+		              <tr>
+		                <td>{{ op.create_date }}</td>
+		                <td><a href="{{ url_for('operation.view_operation', id=op.id) }}" target="_blank">{{ op.codename }}</a></td>
+										<td>{{ op.account_idx }}</td>
+										<td>{{ op.droplet_id }}</td>
+		                <td>{{ op.volume_id }}</td>
+		                <td>{{ unlocked }} XMR ({{ locked }} locked)</td>
+		              </tr>
+
+								{% endif %}
+		            {% endfor %}
+		          </table>
+
+							<h1>Unpaid Ops</h1>
+							<ul>
+							{% for op in ops %}
+								{% if op.get_balances()['balance'] == 0 %}
+									<li>{{ op.create_date }} - {{ op.id }} - {{ op.codename }} - {{ op.account_idx }}</li>
+								{% endif %}
+							{% endfor %}
+						</ul>
+						{% endif %}
+
+					{% else %}
+						<h1>Stats</h1>
+						<p>You're not supposed to be here.</p>
+					{% endif %}
+        </div>
+  		</div>
+  	</section>
+
+  	{% include 'includes/footer.html' %}
+
+	</body>
+</html>

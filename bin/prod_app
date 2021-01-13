@@ -1,0 +1,27 @@
+#!/bin/bash
+
+BASE=data/gunicorn
+
+source .venv/bin/activate
+export FLASK_APP=app/app.py
+export FLASK_SECRETS=config.py
+export FLASK_DEBUG=0
+export FLASK_ENV=production
+
+mkdir -p $BASE
+
+kill $(cat $BASE/gunicorn.pid) 2>&1
+
+sleep 2
+
+gunicorn \
+  --bind 127.0.0.1:4000 "app.app:app" \
+  --daemon \
+  --log-file $BASE/gunicorn.log \
+  --pid $BASE/gunicorn.pid \
+  --access-logfile $BASE/access.log \
+  --reload
+
+sleep 2
+
+echo "Starting gunicorn with pid $(cat $BASE/gunicorn.pid)"

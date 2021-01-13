@@ -1,0 +1,76 @@
+<!DOCTYPE HTML>
+<html>
+
+	{% include 'includes/head.html' %}
+
+	<body>
+
+  	{% include 'includes/header.html' %}
+
+  	<section class="hero is-primary">
+  		<div class="hero-body">
+        <div class="container center">
+					<p>This web service is a simple way of supporting the Monero network by launching new nodes, extending the blockchain globally, and enhancing the user experience for others.</p>
+					<br />
+  				<p>Navigate to the Launchpad in the header above to begin a node launch operation.</p>
+        </div>
+  		</div>
+  	</section>
+
+		{% if funded_ops %}
+    <section class="hero is-light">
+  		<div class="hero-body">
+        <div class="container center">
+          <h1>Nodes in Orbit</h1>
+					<br />
+					{% if funded_ops %}
+					<table class="table center">
+            <tr>
+              <th>Operation</th>
+              <th>Create Time</th>
+							<th>Region</th>
+              <th>Node DNS</th>
+							<th>Status</th>
+              <th>Links</th>
+            </tr>
+            {% for op in funded_ops %}
+              <tr>
+                <td>{{ op.codename }}</td>
+                <td>{{ op.create_date }}</td>
+								<td>{{ op.region }}</td>
+                <td>{{ op.get_node_url() }}</td>
+								<td id="{{ op.codename }}-status"><i class="fa fa-sync-alt fa-spin"></i> Checking</td>
+                <td><a class="is-link" href="https://{{ op.get_node_url() }}/d/0ktA4KDGk/daemon-stats?orgId=1&refresh=30s&from=now-6h&to=now" target="_blank">View Stats</a></td>
+              </tr>
+            {% endfor %}
+          </table>
+					{% else %}
+					- NONE -
+					{% endif %}
+        </div>
+  		</div>
+  	</section>
+		{% endif %}
+
+		<script>
+		{% for op in funded_ops %}
+		fetch('/api/info/{{ op.codename }}')
+			.then((resp) => resp.json())
+			.then(function(data) {
+					if(data['synchronized']){
+						var html = '<i class="fa fa-check-circle is-green"></i> Synced'
+					} else if (data['error']) {
+						var html = '<i class="fa fa-exclamation-triangle is-red"></i> Error'
+					} else {
+						var html = '<i class="fa fa-sync-alt fa-spin"></i> Syncing'
+					}
+					var s = document.getElementById('{{ op.codename }}-status')
+					s.innerHTML = html
+			})
+		{% endfor %}
+		</script>
+
+  	{% include 'includes/footer.html' %}
+
+	</body>
+</html>

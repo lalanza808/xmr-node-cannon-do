@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<html>
+
+	{% include 'includes/head.html' %}
+
+	<body>
+
+  	{% include 'includes/header.html' %}
+
+  	<section class="hero is-dark">
+  		<div class="hero-body">
+        <div class="container center">
+					<h1>Payouts</h1>
+					<a href="{{ url_for('operation.view_operation', id=id) }}">Go Back</a>
+					<br />
+					{% if payouts %}
+					<table class="table center">
+            <tr>
+							<th>Payout ID</th>
+              <th>Date</th>
+							<th>Tx ID</th>
+							<th>Cost Per Hour</th>
+							<th>Hours Since Last</th>
+							<th>XMR Price</th>
+              <th>XMR Sent</th>
+            </tr>
+            {% for payout in payouts | sort(attribute='create_date', reverse=True) %}
+              <tr>
+								<td>{{ payout.id }}</td>
+                <td>{{ payout.create_date }}</td>
+                <td><a href="{{ payout.xmr_tx_id | xmr_block_explorer }}" target="_blank">{{ payout.xmr_tx_id | truncate(12) }}</a></td>
+								<td>${{ payout.total_cost_ausd | from_atomic_usd }}</td>
+								<td>{{ payout.hours_since_last }}</td>
+                <td>{{ payout.xmr_price_ausd | from_atomic_usd }}</td>
+                <td>{{ payout.xmr_sent_axmr | from_atomic_xmr }} XMR</td>
+              </tr>
+            {% endfor %}
+          </table>
+					{% endif %}
+				</div>
+			</div>
+		</section>
+
+  	{% include 'includes/footer.html' %}
+
+	</body>
+</html>

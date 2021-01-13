@@ -1,0 +1,19 @@
+#!/bin/bash
+
+tar \
+  --exclude='data' \
+  --exclude='.venv' \
+  --exclude='.git' \
+  --exclude='.env' \
+  --exclude='*.pyc' \
+  --exclude='__pycache__' \
+  -czf data/release.tar.gz .
+
+scp data/release.tar.gz xmrcannon:/tmp/xmrcannon.tar.gz
+
+MKTEMP=$(ssh xmrcannon mktemp -d)
+
+ssh xmrcannon tar xzf /tmp/xmrcannon.tar.gz -C $MKTEMP
+
+ssh xmrcannon rsync -avzP $MKTEMP/ /home/xmrcannon/xmrcannon/
+ssh xmrcannon rsync -avzP $MKTEMP/app/ /home/xmrcannon/xmrcannon/app/ --delete

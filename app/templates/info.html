@@ -1,0 +1,42 @@
+<!DOCTYPE HTML>
+<html>
+
+	{% include 'includes/head.html' %}
+
+	<body>
+
+  	{% include 'includes/header.html' %}
+
+  	<section class="hero is-dark">
+  		<div class="hero-body">
+        <div class="container center">
+          <h1>Site Info</h1>
+					<p style="width:60%; margin: 0 auto;">
+            I made this site in response to the ongoing Monero network attacks, the need for additional nodes to strengthen the network, and the demand of having non-technical community members be able to contribute in a meaningful way. I plan to open source this project on my <a href="https://github.com/lalanza808" target="_blank">Github</a> page once I clean up the code and give it some more QA. I hope other community members with some technical ability will be able to set this up on their own
+          </p>
+          <br />
+					<br />
+
+          <h1>Launch Info</h1>
+          <ol>
+            <li>The URLs generated will not be linked anywhere for you so please bookmark or save the operation ID</li>
+            <li>Any XMR sent to the address below will be used to power <strong>your</strong> node.</li>
+            <li>Funds are paid out to the site operator every few hours using current market prices.</li>
+            <li>Prices are determined using the CoinGecko crypto market API.</li>
+            <li>If no more funds are left the node will be destroyed.</li>
+            <li>I will leave the operation available to refill for a few days.</li>
+            <li>You need to send at least ~{{ prices['minimum_xmr'] }} XMR to launch the node (this fluctuates).</li>
+          </ol>
+          <br />
+          <br />
+
+  				<h1>Pricing Details</h1>
+          {% include 'includes/pricing_details.html' %}
+        </div>
+  		</div>
+  	</section>
+
+  	{% include 'includes/footer.html' %}
+
+	</body>
+</html>

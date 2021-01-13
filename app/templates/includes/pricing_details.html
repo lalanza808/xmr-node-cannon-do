@@ -1,0 +1,72 @@
+<p>Review the pricing details below to better understand how the XMR will be spent.</p>
+<br />
+<div class="columns">
+  <div class="column">
+    <h2>Costs</h2>
+    <p>Compute Cost (hour): ${{ prices['droplet_cost'] }}</p>
+    <p>Storage Cost (hour): ${{ prices['volume_cost'] }}</p>
+    <p>Management Cost (hour): ${{ prices['mgmt_cost'] }}</p>
+    <p>Total Cost USD (hour): ${{ prices['in_usd'] | round(4) }}</p>
+    <p>Total Cost XMR (hour): {{ prices['in_xmr'] | round(4) }} XMR</p>
+  </div>
+  {% if op %}
+  <div class="column">
+    <h2>Op Detail</h2>
+    <p>Codename: {{ op.codename }}</p>
+    <p>Region: {{ op.region }}</p>
+    <p>Create Date: {{ op.create_date | humanize }}</p>
+  </div>
+  {% endif %}
+  <div class="column">
+    <h2>Sizing</h2>
+    <p>Node Image: {{ config.DO_DROPLET_IMAGE }}</p>
+    <p>Node Size: {{ config.DO_DROPLET_SIZE }}</p>
+    <p>Volume Size: {{ config.DO_DROPLET_STORAGE_GB }} GiB</p>
+  </div>
+</div>
+<p>Current XMR Price: ${{ prices['xmr_price'] }}</p>
+<br />
+<table class="table center">
+  <tr>
+    <th>Timeframe</th>
+    <th>Compute</th>
+    <th>Storage</th>
+    <th>Maintenance</th>
+    <th>Total</th>
+    <th>XMR Needed</th>
+  </tr>
+  <tr>
+    <td>2 weeks</td>
+    <td>${{ (prices['droplet_cost'] * 336) | round(3) }}</td>
+    <td>${{ (prices['volume_cost'] * 336) | round(3) }}</td>
+    <td>${{ (prices['mgmt_cost'] * 336) | round(3) }}</td>
+    <td>${{ (prices['in_usd'] * 336) | round(3) }}</td>
+    <td>{{ (prices['in_xmr'] * 336) | round(4) }} XMR</td>
+  </tr>
+  <tr>
+    <td>1 month</td>
+    <td>${{ (prices['droplet_cost'] * 730) | round(3) }}</td>
+    <td>${{ (prices['volume_cost'] * 730) | round(3) }}</td>
+    <td>${{ (prices['mgmt_cost'] * 730) | round(3) }}</td>
+    <td>${{ (prices['in_usd'] * 730) | round(3) }}</td>
+    <td>{{ (prices['in_xmr'] * 730) | round(4) }} XMR</td>
+  </tr>
+  <tr>
+    <td>6 months</td>
+    <td>${{ (prices['droplet_cost'] * 4380) | round(3) }}</td>
+    <td>${{ (prices['volume_cost'] * 4380) | round(3) }}</td>
+    <td>${{ (prices['mgmt_cost'] * 4380) | round(3) }}</td>
+    <td>${{ (prices['in_usd'] * 4380) | round(3) }}</td>
+    <td>{{ (prices['in_xmr'] * 4380) | round(4) }} XMR</td>
+  </tr>
+  <tr>
+    <td>1 year</td>
+    <td>${{ (prices['droplet_cost'] * 8760) | round(3) }}</td>
+    <td>${{ (prices['volume_cost'] * 8760) | round(3) }}</td>
+    <td>${{ (prices['mgmt_cost'] * 8760) | round(3) }}</td>
+    <td>${{ (prices['in_usd'] * 8760) | round(3) }}</td>
+    <td>{{ (prices['in_xmr'] * 8760) | round(4) }} XMR</td>
+  </tr>
+</table>
+
+<p>These prices will fluctuate with the market price of XMR.</p>

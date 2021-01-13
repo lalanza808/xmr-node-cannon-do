@@ -1,0 +1,24 @@
+<header id="header">
+  <div class="center">
+    <h1 id="title">{{ config.SITE_NAME }}</h1>
+  </div>
+  <nav id="nav">
+    <ul class="center">
+      <p>
+        <a href="/">Home</a> x
+        <a href="/launchpad">Launchpad</a> x
+        <a href="/info">Info</a>
+      </p>
+    </ul>
+  </nav>
+</header>
+
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+  <div class="center">
+    {% for message in messages %}
+      <p>{{ message }}</p>
+    {% endfor %}
+  </div>
+  {% endif %}
+{% endwith %}

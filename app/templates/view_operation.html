@@ -1,0 +1,132 @@
+{% set node_url = op.codename + '.node.' + config.DO_DOMAIN %}
+
+<!DOCTYPE HTML>
+<html>
+
+	{% include 'includes/head.html' %}
+
+	<body>
+
+  	{% include 'includes/header.html' %}
+
+  	<section class="hero is-dark">
+  		<div class="hero-body">
+        <div class="container center">
+					{% if txes %}
+
+						{% if (balance[0] | from_atomic_xmr) > prices['minimum_xmr'] or droplet %}
+							<h1>Operation is a Go!</h1>
+							<p>Created: {{ op.create_date }} ({{ op.create_date | humanize }})</p>
+							<p>Codename: {{ op.codename }}</p>
+							<p>Balance: {{ balance[1] | from_atomic_xmr }} XMR ({{ (balance[0] - balance[1]) | from_atomic_xmr }} locked)</p>
+							{% if droplet %}
+							<p>
+								Node: {{ op.get_node_url() }} -
+								<a class="is-link" href="https://{{ op.get_node_url() }}/d/0ktA4KDGk/daemon-stats?orgId=1&refresh=30s&from=now-6h&to=now" target="_blank">Monitoring</a> -
+								<a class="is-link" href="http://{{ op.get_node_url() }}:18081/get_info" target="_blank">Daemon</a>
+							</p>
+							<p>Use http://{{ op.get_node_url() }}:18081 as your remote node to use this with your XMR wallet.</p>
+							{% endif %}
+							<br />
+							<p>Estimated hourly XMR payout: {{ prices['in_xmr'] | round(6) }} XMR</p>
+							<p>Current XMR price: ${{ prices['xmr_price'] }}</p>
+							<p>Estimated flight times remaining:</p>
+							<ul>
+								<li>* {{ ((prices['xmr_price'] * balance[0] | from_atomic_xmr) / prices['in_usd']) | round(3) }} hours - OR</li>
+								<li>* {{ ((prices['xmr_price'] * balance[0] | from_atomic_xmr) / prices['in_usd'] / 24) | round(3) }} days - OR</li>
+								<li>* {{ ((prices['xmr_price'] * balance[0] | from_atomic_xmr) / prices['in_usd'] / 730) | round(3) }} months</li>
+							</ul>
+
+						{% else %}
+							<h1>Operation is not ready!</h1>
+							<p>You haven't sent enough XMR.</p>
+							<p>Codename: {{ op.codename }}</p>
+							<p>Balance: {{ balance[1] | from_atomic_xmr }} XMR ({{ (balance[0] - balance[1]) | from_atomic_xmr }} locked)</p>
+							<p>Minimum: {{ prices['minimum_xmr'] }}</p>
+							{% if droplet %}
+							<p>
+								Node: {{ op.get_node_url() }} -
+								<a class="is-link" href="https://{{ op.get_node_url() }}//d/0ktA4KDGk/daemon-stats?orgId=1&refresh=30s&from=now-6h&to=now" target="_blank">Monitoring</a> -
+								<a class="is-link" href="http://{{ op.get_node_url() }}:18081/get_info" target="_blank">Daemon</a>
+							</p>
+							<p>Use http://{{ op.get_node_url() }}:18081 as your remote node to use this with your XMR wallet.</p>
+							{% endif %}
+						{% endif %}
+
+					{% else %}
+						<h1>Prepare for Takeoff</h1>
+						<p>Here is what you need to know:</p>
+						<br />
+						<ol>
+							<li>This URL will not be linked anywhere for you so please bookmark or save the operation ID</li>
+							<li>Any XMR sent to the address below will be used to power <strong>your</strong> node.</li>
+							<li>Funds are paid out to the site operator every few hours using current market prices.</li>
+							<li>Prices are determined using the CoinGecko crypto market API.</li>
+							<li>If no more funds are left the node will be destroyed.</li>
+							<li>I will leave the operation available to refill for a few days.</li>
+							<li>You need to send at least {{ prices['minimum_xmr'] }} XMR to launch the node.</li>
+						</ol>
+						<br />
+						{% include 'includes/pricing_details.html' %}
+					{% endif %}
+
+					{% if last_payout %}
+					<br />
+						<p>
+							Last payout: {{ last_payout.create_date | humanize }} -
+							<a class="is-link" href="{{ url_for('operation.view_operation_payouts', id=op.id) }}">View Payouts</a>
+						</p>
+					{% endif %}
+				</div>
+			</div>
+		</section>
+
+		<section class="hero">
+			<div class="hero-body">
+	      <div class="container center">
+					<h1>Fund this Operation</h1>
+					<p class="code">{{ op.address }}</p>
+					<br />
+					<img src="data:image/png;base64,{{ qrcode }}" width=200 class="center">
+					<p>Balance: {{ balance[1] | from_atomic_xmr }} XMR ({{ (balance[0] - balance[1]) | from_atomic_xmr }} locked)</p>
+					<br />
+					{% if txes %}
+					<table class="table center">
+            <tr>
+              <th>Date</th>
+              <th>Tx ID</th>
+              <th>Amount</th>
+              <th>Confirmations</th>
+              <th>Height</th>
+              <th>Fee</th>
+            </tr>
+            {% for tx in txes | sort(attribute='timestamp', reverse=True) %}
+              <tr>
+                <td>{{ tx.timestamp | ts }}</td>
+                <td><a href="{{ tx.txid | xmr_block_explorer }}" target="_blank">{{ tx.txid | truncate(12) }}</a></td>
+								{% if tx.type == 'in' %}
+									{% set color = 'green' %}
+									{% set op = '+' %}
+								{% elif tx.type == 'out' %}
+									{% set color = 'red' %}
+									{% set op = '-' %}
+								{% else %}
+									{% set color = '' %}
+									{% set op = '' %}
+								{% endif %}
+                <td class="is-{{ color }}">{{ op }}{{ tx.amount | from_atomic_xmr }} XMR</td>
+                <td>{{ tx.confirmations }}</td>
+                <td>{{ tx.height }}</td>
+                <td>{{ tx.fee | from_atomic_xmr }} XMR</td>
+              </tr>
+            {% endfor %}
+          </table>
+					{% endif %}
+        </div>
+  		</div>
+  	</section>
+
+  	{% include 'includes/footer.html' %}
+
+	</body>
+</html>

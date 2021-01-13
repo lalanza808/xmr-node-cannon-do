@@ -1,0 +1,35 @@
+#!/bin/bash
+
+# stagenet monero
+
+export $(cat .env)
+
+if [ ! -d "$XMR_WALLET_PATH" ]; then
+  # initialize new xmr wallet and retain seed
+  mkdir -p $XMR_WALLET_PATH
+  docker run --rm -it --name nodecannon-xmr-wallet-init \
+    -v $XMR_WALLET_PATH:/root \
+    lalanza808/monero:latest \
+    monero-wallet-cli \
+      --daemon-address $XMR_DAEMON_URI \
+      --generate-new-wallet /root/xmr \
+      --stagenet \
+      --password $XMR_WALLET_PASS
+fi
+
+# setup rpc process
+docker run --rm -d --name nodecannon-xmr-wallet \
+  -v $XMR_WALLET_PATH:/root \
+  -p 9990:9990 \
+  lalanza808/monero:latest \
+  monero-wallet-rpc \
+    --daemon-address $XMR_DAEMON_URI \
+    --wallet-file /root/xmr \
+    --stagenet \
+    --password $XMR_WALLET_PASS \
+    --rpc-bind-port 9990 \
+    --rpc-bind-ip 0.0.0.0 \
+    --confirm-external-bind \
+    --rpc-login "$XMR_WALLET_RPC_USER:$XMR_WALLET_RPC_PASS" \
+    --log-file /root/rpc.log \
+    --trusted-daemon
