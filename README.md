@@ -33,6 +33,12 @@ Use the provided Makefile to provision stuff; pass `prod` or `dev` depending on 
 
 All secrets are passed to the application as environment variables which are loaded from `.env` in the root directory. The `config.py` file references env vars or uses a default; docker-compose and the app consume secrets from `.env`.
 
+### Monero Node Initialization
+
+Nodes are configured using a user data/cloud-init script in the [docker-monero-node](https://github.com/lalanza808/docker-monero-node/blob/master/cloud-init.sh) repo.
+
+User data is defined in `app.library.digitalocean.create_droplet` method.
+
 ### Digital Ocean Backend
 
 Digital Ocean configuration can be found here: [Digital Ocean](docs/DigitalOcean.md)
