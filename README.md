@@ -1,4 +1,4 @@
-# xmr-node-cannon
+# xmr-node-cannon-do
 
 This is a web service that allows anonymous visitors to fund the launch of public Monero nodes onto Digital Ocean's compute infrastructure. The service will autonomously organize, execute, and track launches and payouts for the operators and participants (moneronauts?).
 
