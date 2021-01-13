@@ -23,9 +23,9 @@ Most of the user facing pages use Redis cache as an intermediary so as to not ov
 Use the provided Makefile to provision stuff; pass `prod` or `dev` depending on your environment.
 
 * Run `cp env-example .env && vim .env` to create a secrets file for the app and containers. Be sure to edit it's contents with the proper secrets.
-* Run `make dev-up` to stand up development infrastructure (pg, redis, rpc wallet).
+* Run `make dev-up` to stand up development infrastructure (pg, redis, stagenet rpc wallet).
 * Run `make dev` to run the development web server.
-* Run `make prod-up` to stand up production infrastructure (pg, redis, rpc wallet).
+* Run `make prod-up` to stand up production infrastructure (pg, redis, mainnet rpc wallet).
 * Run `make prod` to run production web server.
 * Run `make init` to apply base database schemas.
 
