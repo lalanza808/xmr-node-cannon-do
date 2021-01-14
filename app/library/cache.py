@@ -15,7 +15,7 @@ class Cache(object):
         self.redis = Redis(host=config.CACHE_HOST, port=config.CACHE_PORT)
 
     def store_data(self, item_name, expiration_minutes, data):
-        current_app.logger.info(f'MISS - {item_name} - {expiration_minutes} minutes')
+        current_app.logger.info(f'SET - {item_name} - expires in {expiration_minutes} minutes')
         self.redis.setex(
             item_name,
             timedelta(minutes=expiration_minutes),
@@ -29,6 +29,7 @@ class Cache(object):
             current_app.logger.info(f'HIT - {key_name}')
             return json_loads(data)
         else:
+            current_app.logger.info(f'MISS - {key_name}')
             try:
                 dns = f'{codename}.node.{config.DO_DOMAIN}'
                 url = f'http://{dns}:18081/get_info'
@@ -46,8 +47,9 @@ class Cache(object):
             current_app.logger.info(f'HIT - {key_name}')
             return json_loads(data)
         else:
+            current_app.logger.info(f'MISS - {key_name}')
             txes = wallet.get_transfers(account_idx)
-            self.store_data(key_name, 1, json_dumps(txes))
+            self.store_data(key_name, 2, json_dumps(txes))
             return txes
 
     def get_balances(self, account_idx, atomic=True):
@@ -61,6 +63,7 @@ class Cache(object):
             current_app.logger.info(f'HIT - {key_name}')
             return json_loads(data)
         else:
+            current_app.logger.info(f'MISS - {key_name}')
             balances = wallet.balances(account_idx, atomic)
             data = {'balance': balances[0], 'unlocked': balances[1]}
             self.store_data(key_name, 2, json_dumps(data))
@@ -75,6 +78,7 @@ class Cache(object):
             current_app.logger.info(f'HIT - {key_name}')
             return json_loads(data)
         else:
+            current_app.logger.info(f'MISS - {key_name}')
             droplet = do.show_droplet(droplet_id)
             self.store_data(key_name, 120, json_dumps(droplet))
             return droplet
@@ -86,6 +90,7 @@ class Cache(object):
             current_app.logger.info(f'HIT - {key_name}')
             return json_loads(data)
         else:
+            current_app.logger.info(f'MISS - {key_name}')
             volume = do.show_volume(volume_id)
             self.store_data(key_name, 120, json_dumps(volume))
             return volume
@@ -97,6 +102,7 @@ class Cache(object):
             current_app.logger.info(f'HIT - {key_name}')
             return float(data.decode())
         else:
+            current_app.logger.info(f'MISS - {key_name}')
             d = get_market_data()
             amt = d['market_data']['current_price'][cur]
             self.store_data(key_name, 5, amt)
@@ -109,6 +115,7 @@ class Cache(object):
             current_app.logger.info(f'HIT - {key_name}')
             return json_loads(data)
         else:
+            current_app.logger.info(f'MISS - {key_name}')
             wallet.get_transfers(subaddress_index)
             self.store_data(key_name, 2, json_dumps(data))
             return data
