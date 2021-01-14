@@ -1,4 +1,7 @@
 {% set node_url = op.codename + '.node.' + config.DO_DOMAIN %}
+{% set balances = op.get_balances() %}
+{% set balance = balances['balance'] %}
+{% set unlocked = balances['unlocked'] %}
 
 <!DOCTYPE HTML>
 <html>
@@ -14,11 +17,11 @@
         <div class="container center">
 					{% if txes %}
 
-						{% if (balance[0] | from_atomic_xmr) > prices['minimum_xmr'] or droplet %}
+						{% if (balance | from_atomic_xmr) > prices['minimum_xmr'] or droplet %}
 							<h1>Operation is a Go!</h1>
 							<p>Created: {{ op.create_date }} ({{ op.create_date | humanize }})</p>
 							<p>Codename: {{ op.codename }}</p>
-							<p>Balance: {{ balance[1] | from_atomic_xmr }} XMR ({{ (balance[0] - balance[1]) | from_atomic_xmr }} locked)</p>
+							<p>Balance: {{ unlocked | from_atomic_xmr }} XMR ({{ (balance - unlocked) | from_atomic_xmr }} locked)</p>
 							{% if droplet %}
 							<p>
 								Node: {{ op.get_node_url() }} -
@@ -32,16 +35,16 @@
 							<p>Current XMR price: ${{ prices['xmr_price'] }}</p>
 							<p>Estimated flight times remaining:</p>
 							<ul>
-								<li>* {{ ((prices['xmr_price'] * balance[0] | from_atomic_xmr) / prices['in_usd']) | round(3) }} hours - OR</li>
-								<li>* {{ ((prices['xmr_price'] * balance[0] | from_atomic_xmr) / prices['in_usd'] / 24) | round(3) }} days - OR</li>
-								<li>* {{ ((prices['xmr_price'] * balance[0] | from_atomic_xmr) / prices['in_usd'] / 730) | round(3) }} months</li>
+								<li>* {{ ((prices['xmr_price'] * balance | from_atomic_xmr) / prices['in_usd']) | round(3) }} hours - OR</li>
+								<li>* {{ ((prices['xmr_price'] * balance | from_atomic_xmr) / prices['in_usd'] / 24) | round(3) }} days - OR</li>
+								<li>* {{ ((prices['xmr_price'] * balance | from_atomic_xmr) / prices['in_usd'] / 730) | round(3) }} months</li>
 							</ul>
 
 						{% else %}
 							<h1>Operation is not ready!</h1>
 							<p>You haven't sent enough XMR.</p>
 							<p>Codename: {{ op.codename }}</p>
-							<p>Balance: {{ balance[1] | from_atomic_xmr }} XMR ({{ (balance[0] - balance[1]) | from_atomic_xmr }} locked)</p>
+							<p>Balance: {{ unlocked | from_atomic_xmr }} XMR ({{ (balance - unlocked) | from_atomic_xmr }} locked)</p>
 							<p>Minimum: {{ prices['minimum_xmr'] }}</p>
 							{% if droplet %}
 							<p>
@@ -88,7 +91,7 @@
 					<p class="code">{{ op.address }}</p>
 					<br />
 					<img src="data:image/png;base64,{{ qrcode }}" width=200 class="center">
-					<p>Balance: {{ balance[1] | from_atomic_xmr }} XMR ({{ (balance[0] - balance[1]) | from_atomic_xmr }} locked)</p>
+					<p>Balance: {{ unlocked | from_atomic_xmr }} XMR ({{ (balance - unlocked) | from_atomic_xmr }} locked)</p>
 					<br />
 					{% if txes %}
 					<table class="table center">

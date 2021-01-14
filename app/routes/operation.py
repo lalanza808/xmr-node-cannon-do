@@ -52,7 +52,6 @@ def view_operation(id):
         qr_uri = f'monero:{op.address}?tx_description={op.codename}'
         qrcode_make(qr_uri).save(_address_qr)
         qrcode = b64encode(_address_qr.getvalue()).decode()
-        balance = wallet.balances(op.account_idx)
         txes = cache.get_transfers(op.account_idx)
         for type in txes:
             for tx in txes[type]:
@@ -65,7 +64,6 @@ def view_operation(id):
             'view_operation.html',
             op=op,
             qrcode=qrcode,
-            balance=balance,
             txes=all_transfers,
             prices=op.get_pricing(),
             droplet=droplet,
