@@ -28,7 +28,7 @@ def cancel_operation(codename):
             if r:
                 op.record_v4_id = None
                 db.session.commit()
-                print(f'Deleted A records for {codename}')
+                current_app.logger.info(f'Deleted A records for {codename}')
         if op.record_v6_id:
             r = do.delete_record(op.record_v6_id)
             if r:
@@ -36,4 +36,4 @@ def cancel_operation(codename):
                 db.session.commit()
                 current_app.logger.info(f'Deleted AAAA records for {codename}')
     else:
-        print('Not an op')
+        current_app.logger.info('Not an op')
