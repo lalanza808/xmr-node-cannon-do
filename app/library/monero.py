@@ -2,6 +2,7 @@ import requests
 import six
 import json
 from decimal import Decimal
+from flask import current_app
 from app import config
 
 
@@ -18,6 +19,7 @@ class WalletRPC(object):
             data=json.dumps({'method': method, 'params': params}),
             auth=self.auth
         )
+        current_app.logger.info(f'GET - {self.endpoint} - {method}')
         if 'error' in r.json():
             return r.json()['error']
         else:

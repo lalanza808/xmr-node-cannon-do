@@ -1,4 +1,5 @@
 from requests import get as r_get
+from flask import current_app
 
 
 def get_market_data(coin_name='monero'):
@@ -12,5 +13,6 @@ def get_market_data(coin_name='monero'):
     }
     headers = {'accept': 'application/json'}
     url = f'https://api.coingecko.com/api/v3/coins/{coin_name}'
+    current_app.logger.info(f'Fetching {coin_name} price metrics from CoinGecko')
     r = r_get(url, headers=headers, data=data)
     return r.json()

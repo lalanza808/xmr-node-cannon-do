@@ -3,6 +3,7 @@ from json import dumps as json_dumps
 from datetime import timedelta
 from redis import Redis
 from requests import get as r_get
+from flask import current_app
 from app.library.coingecko import get_market_data
 from app.library.monero import wallet
 from app.library.digitalocean import do
@@ -14,6 +15,7 @@ class Cache(object):
         self.redis = Redis(host=config.CACHE_HOST, port=config.CACHE_PORT)
 
     def store_data(self, item_name, expiration_minutes, data):
+        current_app.logger.info(f'MISS - {item_name} - {expiration_minutes} minutes')
         self.redis.setex(
             item_name,
             timedelta(minutes=expiration_minutes),
@@ -24,6 +26,7 @@ class Cache(object):
         key_name = f'node_{codename}_info'
         data = self.redis.get(key_name)
         if data:
+            current_app.logger.info(f'HIT - {key_name}')
             return json_loads(data)
         else:
             try:
@@ -40,6 +43,7 @@ class Cache(object):
         key_name = f'wallet_txes_{account_idx}'
         data = self.redis.get(key_name)
         if data:
+            current_app.logger.info(f'HIT - {key_name}')
             return json_loads(data)
         else:
             txes = wallet.get_transfers(account_idx)
@@ -54,17 +58,21 @@ class Cache(object):
         key_name = f'wallet_balances_{account_idx}{extra}'
         data = self.redis.get(key_name)
         if data:
+            current_app.logger.info(f'HIT - {key_name}')
             return json_loads(data)
         else:
             balances = wallet.balances(account_idx, atomic)
             data = {'balance': balances[0], 'unlocked': balances[1]}
-            self.store_data(key_name, 1, json_dumps(data))
+            self.store_data(key_name, 2, json_dumps(data))
             return data
 
     def show_droplet(self, droplet_id):
+        if droplet_id is None:
+            return None
         key_name = f'droplet_{droplet_id}'
         data = self.redis.get(key_name)
         if data:
+            current_app.logger.info(f'HIT - {key_name}')
             return json_loads(data)
         else:
             droplet = do.show_droplet(droplet_id)
@@ -75,6 +83,7 @@ class Cache(object):
         key_name = f'volume_{volume_id}'
         data = self.redis.get(key_name)
         if data:
+            current_app.logger.info(f'HIT - {key_name}')
             return json_loads(data)
         else:
             volume = do.show_volume(volume_id)
@@ -85,6 +94,7 @@ class Cache(object):
         key_name = f'xmr_price_{cur}'
         data = self.redis.get(key_name)
         if data:
+            current_app.logger.info(f'HIT - {key_name}')
             return float(data.decode())
         else:
             d = get_market_data()
@@ -96,6 +106,7 @@ class Cache(object):
         key_name = f'xmr_wallet_{subaddress_index}_txes'
         data = self.redis.get(key_name)
         if data:
+            current_app.logger.info(f'HIT - {key_name}')
             return json_loads(data)
         else:
             wallet.get_transfers(subaddress_index)

@@ -1,4 +1,5 @@
 import requests
+from flask import current_app
 from app import config
 
 
@@ -11,6 +12,7 @@ class DigitalOcean(object):
 
     def make_req(self, method, endpoint, data=None):
         url = self.base + endpoint
+        current_app.logger.info(f'{method.upper()} - {url}')
         if method == 'post':
             r = requests.post(url, headers=self.headers, json=data)
         elif method == 'get':
