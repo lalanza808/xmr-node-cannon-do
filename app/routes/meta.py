@@ -30,9 +30,15 @@ def info():
 @bp.route('/stats')
 def stats():
     token = config.STATS_TOKEN == request.args.get('token')
+    all_ops = {'active': [], 'inactive': []}
     ops = Operation.query.all()
+    for op in ops:
+        if op.has_txes():
+            all_ops['active'].append(op)
+        else:
+            all_ops['inactive'].append(op)
     return render_template(
         'stats.html',
-        ops=ops,
+        all_ops=all_ops,
         token=token
     )

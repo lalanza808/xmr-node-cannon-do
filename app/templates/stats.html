@@ -13,7 +13,7 @@
 					{% if token %}
 	          <h1>Paid Ops</h1>
 						<br />
-						{% if ops %}
+						{% if all_ops %}
 							<table class="table center">
 		            <tr>
 		              <th>Date</th>
@@ -23,11 +23,10 @@
 		              <th>Volume ID</th>
 		              <th>Balances</th>
 		            </tr>
-		            {% for op in ops | sort(attribute='create_date', reverse=True) %}
+		            {% for op in all_ops['active'] | sort(attribute='create_date', reverse=True) %}
 								{% set balances = op.get_balances() %}
 								{% set unlocked = balances['unlocked'] | from_atomic_xmr %}
 								{% set locked = (balances['balance'] - balances['unlocked']) | from_atomic_xmr %}
-								{% if balances['balance'] > 0 %}
 		              <tr>
 		                <td>{{ op.create_date }}</td>
 		                <td><a href="{{ url_for('operation.view_operation', id=op.id) }}" target="_blank">{{ op.codename }}</a></td>
@@ -36,17 +35,13 @@
 		                <td>{{ op.volume_id }}</td>
 		                <td>{{ unlocked }} XMR ({{ locked }} locked)</td>
 		              </tr>
-
-								{% endif %}
 		            {% endfor %}
 		          </table>
 
 							<h1>Unpaid Ops</h1>
 							<ul>
-							{% for op in ops %}
-								{% if op.get_balances()['balance'] == 0 %}
-									<li>{{ op.create_date }} - <a class="is-link" href="{{ url_for('operation.view_operation', id=op.id) }}">{{ op.id }}</a> - {{ op.codename }} - {{ op.account_idx }}</li>
-								{% endif %}
+							{% for op in all_ops['inactive'] %}
+								<li>{{ op.create_date }} - <a class="is-link" href="{{ url_for('operation.view_operation', id=op.id) }}">{{ op.id }}</a> - {{ op.codename }} - {{ op.account_idx }}</li>
 							{% endfor %}
 						</ul>
 						{% endif %}
