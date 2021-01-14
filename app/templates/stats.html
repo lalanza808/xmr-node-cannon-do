@@ -45,7 +45,7 @@
 							<ul>
 							{% for op in ops %}
 								{% if op.get_balances()['balance'] == 0 %}
-									<li>{{ op.create_date }} - {{ op.id }} - {{ op.codename }} - {{ op.account_idx }}</li>
+									<li>{{ op.create_date }} - <a class="is-link" href="{{ url_for('operation.view_operation', id=op.id) }}">{{ op.id }}</a> - {{ op.codename }} - {{ op.account_idx }}</li>
 								{% endif %}
 							{% endfor %}
 						</ul>
