@@ -49,3 +49,9 @@ DO_DROPLET_IMAGE = getenv('DO_DROPLET_IMAGE', 'ubuntu-20-04-x64')
 DO_DROPLET_SIZE = getenv('DO_DROPLET_SIZE', 's-2vcpu-2gb')
 DO_DROPLET_STORAGE_GB = int(getenv('DO_DROPLET_STORAGE_GB', 110))
 DO_DOMAIN = getenv('DO_DOMAIN', SERVER_NAME)
+
+# MatterMost
+MM_ICON = getenv('MM_ICON', 'https://web.getmonero.org/press-kit/symbols/monero-symbol-480.png')
+MM_CHANNEL = getenv('MM_CHANNEL', '')
+MM_USERNAME = getenv('MM_USERNAME', 'xmrcannon-local')
+MM_ENDPOINT = getenv('MM_ENDPOINT', '')

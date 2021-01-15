@@ -1,10 +1,17 @@
 import click
+from logging import Handler
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from app.library.mattermost import post_webhook
 from app import config
 
 
 db = SQLAlchemy()
+
+
+class MattermostHandler(Handler):
+    def emit(self, record):
+        return post_webhook(self.format(record))
 
 
 def setup_db(app: Flask):
