@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html>
+
+	{% include 'includes/head.html' %}
+
+	<body>
+
+  	{% include 'includes/header.html' %}
+
+  	<section class="hero is-primary">
+  		<div class="hero-body">
+        <div class="container center">
+					<p>Well dang, something broke.</p>
+					<br />
+					<a href="{{ request.path }}">Try Again</a>
+        </div>
+  		</div>
+  	</section>
+
+  	{% include 'includes/footer.html' %}
+
+	</body>
+</html>

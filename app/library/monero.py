@@ -16,9 +16,11 @@ class WalletRPC(object):
     def make_wallet_rpc(self, method, params={}):
         r = requests.get(
             self.endpoint,
+            timeout=8,
             data=json.dumps({'method': method, 'params': params}),
             auth=self.auth
         )
+        r.raise_for_status()
         current_app.logger.info(f'GET - {self.endpoint} - {method}')
         if 'error' in r.json():
             return r.json()['error']

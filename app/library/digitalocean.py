@@ -14,11 +14,11 @@ class DigitalOcean(object):
         url = self.base + endpoint
         current_app.logger.info(f'{method.upper()} - {url}')
         if method == 'post':
-            r = requests.post(url, headers=self.headers, json=data)
+            r = requests.post(url, timeout=8, headers=self.headers, json=data)
         elif method == 'get':
-            r = requests.get(url, headers=self.headers)
+            r = requests.get(url, timeout=8, headers=self.headers)
         elif method == 'delete':
-            r = requests.delete(url, headers=self.headers)
+            r = requests.delete(url, timeout=8, headers=self.headers)
         else:
             return 'method not defined'
         r.raise_for_status()
