@@ -57,7 +57,11 @@ dictConfig({
     },
     "root": {
         "level": "DEBUG" if app.debug else "INFO",
+<<<<<<< HEAD
         "handlers": ["console"] if app.debug else ["console", "mattermost"],
+=======
+        "handlers": ["console", "mattermost"] if app.debug else ["console", "mattermost"],
+>>>>>>> 2642962de697b779897b001dcffeabea8e7904d9
     }
 })
 
