@@ -3,6 +3,7 @@ import requests
 from logging.config import dictConfig
 from flask import render_template
 from app.factory import create_app
+from app.library.cache import cache
 
 
 app = create_app()
@@ -10,7 +11,12 @@ app = create_app()
 
 @app.errorhandler(requests.exceptions.ConnectionError)
 def request_connection_error(e):
-    app.logger.error('error')
+    key_name = 'request_connection_error'
+    data = cache.redis.get(key_name)
+    if not data:
+        app.logger.error(f'HTTP connection error: {e}')
+        cache.store_data(key_name, 10, 1)
+
     return render_template('error.html'), 500
 
 dictConfig({
@@ -51,7 +57,7 @@ dictConfig({
     },
     "root": {
         "level": "DEBUG" if app.debug else "INFO",
-        "handlers": ["console", "mattermost"] if app.debug else ["console", "mattermost"],
+        "handlers": ["console"] if app.debug else ["console", "mattermost"],
     }
 })
 

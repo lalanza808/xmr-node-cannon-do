@@ -20,6 +20,7 @@ gunicorn \
   --log-file $BASE/gunicorn.log \
   --pid $BASE/gunicorn.pid \
   --access-logfile $BASE/access.log \
+  --capture-output \
   --reload
 
 sleep 2
