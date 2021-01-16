@@ -52,22 +52,24 @@
   	</section>
 		{% endif %}
 
-		<script>
-		{% for op in funded_ops %}
-		fetch('/api/info/{{ op.codename }}')
-			.then((resp) => resp.json())
-			.then(function(data) {
-					if(data['synchronized']){
-						var html = '<i class="fa fa-check-circle is-green"></i> Synced'
-					} else if (data['error']) {
-						var html = '<i class="fa fa-exclamation-triangle is-red"></i> Error'
-					} else {
-						var html = '<i class="fa fa-sync-alt fa-spin"></i> Syncing'
-					}
-					var s = document.getElementById('{{ op.codename }}-status')
-					s.innerHTML = html
-			})
-		{% endfor %}
+		<script type="text/javascript">
+		window.onload = function() {
+			{% for op in funded_ops %}
+			fetch('/api/info/{{ op.codename }}')
+				.then((resp) => resp.json())
+				.then(function(data) {
+						if(data['synchronized']){
+							var html = '<i class="fa fa-check-circle is-green"></i> Synced'
+						} else if (data['error']) {
+							var html = '<i class="fa fa-exclamation-triangle is-red"></i> Error'
+						} else {
+							var html = '<i class="fa fa-sync-alt fa-spin"></i> Syncing'
+						}
+						var s = document.getElementById('{{ op.codename }}-status')
+						s.innerHTML = html
+				})
+			{% endfor %}
+		}
 		</script>
 
   	{% include 'includes/footer.html' %}
