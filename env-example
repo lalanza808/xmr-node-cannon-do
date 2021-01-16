@@ -31,3 +31,8 @@ DO_DROPLET_IMAGE=ubuntu-20-04-x64
 DO_DROPLET_SIZE=s-2vcpu-2gb
 DO_DROPLET_STORAGE_GB=120
 DO_DOMAIN=__yourxmrcannon.net__
+
+MM_ICON=https://xxx.com/logo.png
+MM_CHANNEL=logs
+MM_USERNAME=xmrcannon-local
+MM_ENDPOINT=https://yourthing.cloud.mattermost.com/hooks/zzzzz
