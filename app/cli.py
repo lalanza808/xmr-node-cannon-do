@@ -115,9 +115,9 @@ def process_payouts():
                     else:
                         click.echo(' - Unable to send XMR')
                 else:
-                    click.echo(f' - Not enough unlocked balance ({balances[1]}) to send XMR')
+                    click.echo(f' - Not enough unlocked balance ({monero.from_atomic(balances[1])}) to send XMR')
 
-                if balances[0] < xmr_to_send:
+                if balances[0] < axmr_to_send:
                     click.echo(' - There is not enough locked balance, this droplet should be destroyed')
                     sleep(5)
                     cancel_operation(op.codename)
