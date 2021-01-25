@@ -72,7 +72,7 @@ def process_payouts():
                 latest_payout = str(latest_payout.id)
 
             diff = arrow.utcnow() - last
-            minutes = diff.seconds / 60
+            minutes = diff.total_seconds() / 60
             hours = minutes / 60
             xmr_to_send = hours * prices['in_xmr']
             axmr_to_send = monero.to_atomic(xmr_to_send)
