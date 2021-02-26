@@ -62,7 +62,7 @@ def view_operation(id):
         last_payout = Payout.query.filter(
             Payout.operation_id == op.id
         ).order_by(Payout.create_date.desc()).first()
-        qrcode = generate_qr(op.address, f"Launching operation {op.id} on xmrcannon.net")
+        qrcode = generate_qr(op.address, f"Funding operation {op.id} on xmrcannon.net")
         return render_template(
             'view_operation.html',
             op=op,
