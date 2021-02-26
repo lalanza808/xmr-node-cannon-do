@@ -25,13 +25,22 @@
             <li>Prices are determined using the CoinGecko crypto market API.</li>
             <li>If no more funds are left the node will be destroyed.</li>
             <li>I will leave the operation available to refill for a few days.</li>
-            <li>You need to send at least ~{{ prices['minimum_xmr'] }} XMR to launch the node (this fluctuates).</li>
+            <li>You need to send at least ~{{ prices['minimum_xmr'] | round(4) }} XMR to launch the node (this fluctuates).</li>
           </ol>
           <br />
           <br />
 
   				<h1>Pricing Details</h1>
           {% include 'includes/pricing_details.html' %}
+					<br />
+					<br />
+
+					<h1>Donation Info</h1>
+					<p>Donations will help me ramp up operations and scale out to more nodes since the pricing is mostly break-even (except for small maintenance fee).</p>
+					<p>XMR Address: {{ config.PAYOUT_ADDRESS }}</p>
+					<br />
+					<img src="data:image/png;base64,{{ qrcode }}" width=200 class="center">
+
         </div>
   		</div>
   	</section>

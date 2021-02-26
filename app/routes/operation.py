@@ -1,10 +1,9 @@
-from io import BytesIO
-from base64 import b64encode
-from qrcode import make as qrcode_make
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from app.library.monero import wallet
+from app.library.digitalocean import do
 from app.library.cache import cache
 from app.forms import CreateOperation
+from app.helpers import generate_qr
 from app.factory import db
 from app.models import Operation, Payout
 from app import config
@@ -18,9 +17,16 @@ def launchpad():
     enabled = config.LAUNCHPAD_ENABLED == True
     if enabled is False:
         flash(
-            'New launches have been disabled for the time being.'
+            'New launches have been disabled by the administrator for the time being.'
             ' Try again later!'
         )
+        return redirect(url_for('meta.index'))
+    op_count = Operation.query.filter(
+        Operation.droplet_id > 0
+    ).count()
+    op_limit = do.show_account()['droplet_limit']
+    if op_count >= op_limit:
+        flash('Maximum number of nodes in orbit already. Try again later!')
         return redirect(url_for('meta.index'))
     form = CreateOperation(request.form)
     if form.validate_on_submit():
@@ -48,10 +54,6 @@ def view_operation(id):
     op = Operation.query.get(id)
     if op:
         all_transfers = list()
-        _address_qr = BytesIO()
-        qr_uri = f'monero:{op.address}?tx_description={op.codename}'
-        qrcode_make(qr_uri).save(_address_qr)
-        qrcode = b64encode(_address_qr.getvalue()).decode()
         txes = cache.get_transfers(op.account_idx)
         for type in txes:
             for tx in txes[type]:
@@ -60,6 +62,7 @@ def view_operation(id):
         last_payout = Payout.query.filter(
             Payout.operation_id == op.id
         ).order_by(Payout.create_date.desc()).first()
+        qrcode = generate_qr(op.address, f"Launching operation {op.id} on xmrcannon.net")
         return render_template(
             'view_operation.html',
             op=op,

@@ -24,6 +24,11 @@ class DigitalOcean(object):
         r.raise_for_status()
         return r
 
+    # Account meta
+    def show_account(self):
+        r = self.make_req('get', 'account')
+        return r.json()['account']
+
     # Domains and records
     def create_record(self, name, ip_addr, type='A'):
         data = {

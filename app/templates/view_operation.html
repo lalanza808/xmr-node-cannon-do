@@ -67,7 +67,7 @@
 							<li>Prices are determined using the CoinGecko crypto market API.</li>
 							<li>If no more funds are left the node will be destroyed.</li>
 							<li>I will leave the operation available to refill for a few days.</li>
-							<li>You need to send at least {{ prices['minimum_xmr'] }} XMR to launch the node.</li>
+							<li>You need to send at least {{ prices['minimum_xmr'] | round(4) }} XMR to launch the node. Send more, because this fluctuates.</li>
 						</ol>
 						<br />
 						{% include 'includes/pricing_details.html' %}

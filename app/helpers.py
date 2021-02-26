@@ -1,3 +1,6 @@
+from io import BytesIO
+from base64 import b64encode
+from qrcode import make as qrcode_make
 from app.models import Operation
 from app.library.digitalocean import do
 from app.factory import db
@@ -11,6 +14,12 @@ def to_ausd(amount):
 def from_ausd(amount):
     return amount / 1000000
 
+def generate_qr(xmr_address, tx_description):
+    _address_qr = BytesIO()
+    qr_uri = f'monero:{xmr_address}?tx_description="{tx_description}"'
+    qrcode_make(qr_uri).save(_address_qr)
+    qrcode = b64encode(_address_qr.getvalue()).decode()
+    return qrcode
 
 def cancel_operation(codename):
     op = Operation.query.filter(

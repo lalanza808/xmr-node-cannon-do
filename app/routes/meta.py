@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request
 from app.models import Operation
+from app.helpers import generate_qr
 from app import config
 
 
@@ -20,10 +21,14 @@ def index():
 
 @bp.route('/info')
 def info():
+    qrcode = generate_qr(
+        config.PAYOUT_ADDRESS, "Donation to @lza_menace on xmrcannon.net"
+    )
     return render_template(
         'info.html',
         prices=Operation().get_pricing(),
-        config=config
+        config=config,
+        qrcode=qrcode
     )
 
 
