@@ -155,7 +155,7 @@ def launch_funded_operations():
                 db.session.commit()
                 click.echo(f'Created new droplet {op.droplet_id}')
 
-                sleep(5)
+                sleep(30)
                 droplet = do.show_droplet(op.droplet_id)
                 for net in droplet['networks']['v4']:
                     if net['type'] == 'public':
