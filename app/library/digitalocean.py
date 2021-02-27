@@ -99,7 +99,7 @@ class DigitalOcean(object):
           ],
           'backups': False,
           'ipv6': True,
-          'user_data': f'#!/bin/bash\nwget https://raw.githubusercontent.com/lalanza808/docker-monero-node/master/cloud-init.sh -q -O - | DOMAIN={name}.node.{config.DO_DOMAIN} ACME_EMAIL={config.ADMIN_EMAIL} GRAF_PASS=${config.GRAF_PASS} GRAF_USER=${config.GRAF_USER} bash',
+          'user_data': f'#!/bin/bash\nwget https://raw.githubusercontent.com/lalanza808/docker-monero-node/master/cloud-init.sh -q -O - | DOMAIN={name}.node.{config.DO_DOMAIN} ACME_EMAIL={config.ADMIN_EMAIL} GRAF_PASS={config.GRAF_PASS} GRAF_USER={config.GRAF_USER} bash',
           'private_networking': None,
           'volumes': extra_vols,
           'tags': []
