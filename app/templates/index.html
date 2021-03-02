@@ -17,13 +17,12 @@
   		</div>
   	</section>
 
-		{% if funded_ops %}
     <section class="hero is-light">
   		<div class="hero-body">
         <div class="container center">
           <h1>{{ funded_ops.count() }} Nodes in Orbit</h1>
 					<br />
-					{% if funded_ops %}
+					{% if funded_ops.count() > 0 %}
 					<table class="table center">
             <tr>
               <th>Operation</th>
@@ -44,13 +43,23 @@
               </tr>
             {% endfor %}
           </table>
-					{% else %}
-					- NONE -
+					<hr>
+					<h1>Connect to a Node</h1>
+					<p>Use any of the individual addresses above using port 18081 in your Monero wallet to use the remote node.</p>
+					<p>
+						You can use the following address that reverse proxies to all active XMR Node Cannon nodes:
+						<br />
+						<br />
+						global.xmrcannon.net
+						<br />
+						(port 443, use SSL)
+					</p>
+					<br />
+					<p>Proxy currently resides in USA, but will be setting up round robin to all global endpoints.</p>
 					{% endif %}
         </div>
   		</div>
   	</section>
-		{% endif %}
 
 		<script type="text/javascript">
 		window.onload = function() {
