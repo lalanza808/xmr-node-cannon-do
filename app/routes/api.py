@@ -1,6 +1,7 @@
-from flask import Blueprint
+from flask import Blueprint, render_template
 from app.models import Operation
 from app.library.cache import cache
+from app import config
 
 
 bp = Blueprint('api', 'api')
@@ -13,3 +14,14 @@ def get_info(codename):
         return cache.get_info(op.codename)
     else:
         return {}
+
+@bp.route('/api/export/ansible')
+def export_ansible():
+    ops = Operation.query.filter(
+        Operation.droplet_id > 0
+    )
+    return render_template(
+        'export_ansible.html',
+        ops=ops,
+        domain=config.DO_DOMAIN
+    )

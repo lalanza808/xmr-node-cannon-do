@@ -1,0 +1,9 @@
+[xmrcannon]
+<br />
+{% for op in ops %}
+{{ op.codename }}.{{ domain }}<br />
+{% endfor %}
+<br />
+[xmrcannon:vars]
+<br />
+ansible_ssh_user=root
