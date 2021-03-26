@@ -36,6 +36,12 @@ class Operation(db.Model):
         b = cache.get_balances(self.account_idx, atomic=atomic)
         return b
 
+    def get_last_payout(self):
+        last_payout = Payout.query.filter(
+            Payout.operation_id == self.id
+        ).order_by(Payout.create_date.desc()).first()
+        return last_payout
+
     def get_pricing(self, live=False):
         if live:
             droplet_size = cache.show_droplet(self.droplet_id)['size_slug']

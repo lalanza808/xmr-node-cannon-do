@@ -21,6 +21,7 @@
 									<th>XMR Account</th>
 									<th>Droplet ID</th>
 		              <th>Volume ID</th>
+									<th>Last Payout</th>
 		              <th>Balances</th>
 		            </tr>
 		            {% for op in all_ops['active'] | sort(attribute='create_date', reverse=True) %}
@@ -32,8 +33,9 @@
 		                <td><a href="{{ url_for('operation.view_operation', id=op.id) }}" target="_blank">{{ op.codename }}</a></td>
 										<td>{{ op.account_idx }}</td>
 										<td>{{ op.droplet_id }}</td>
-		                <td>{{ op.volume_id }}</td>
-		                <td>{{ unlocked }} XMR ({{ locked }} locked)</td>
+										<td>{{ op.volume_id }}</td>
+										<td>{{ op.get_last_payout().create_date | humanize }}</td>
+										<td>{{ unlocked }} XMR ({{ locked }} locked)</td>
 		              </tr>
 		            {% endfor %}
 		          </table>
