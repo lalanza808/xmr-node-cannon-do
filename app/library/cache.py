@@ -22,6 +22,24 @@ class Cache(object):
             value=data
         )
 
+    def get_tor_url(self, codename):
+        key_name = f'node_{codename}_tor_url'
+        data = self.redis.get(key_name)
+        if data:
+            current_app.logger.info(f'HIT - {key_name}')
+            return data
+        else:
+            current_app.logger.info(f'MISS - {key_name}')
+            try:
+                dns = f'{codename}.node.{config.DO_DOMAIN}'
+                url = f'https://{dns}/tor/'
+                r = r_get(url, timeout=6)
+                data = r.text.strip()
+                self.store_data(key_name, 86400, data)
+                return data
+            except:
+                return {'error': 'true'}
+
     def get_info(self, codename):
         key_name = f'node_{codename}_info'
         data = self.redis.get(key_name)

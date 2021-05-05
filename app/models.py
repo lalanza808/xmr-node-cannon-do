@@ -29,6 +29,10 @@ class Operation(db.Model):
     record_v4_id = db.Column(db.Integer, unique=True, nullable=True)
     record_v6_id = db.Column(db.Integer, unique=True, nullable=True)
 
+    def get_node_tor_url(self):
+        u = cache.get_tor_url(self.codename)
+        return u.decode()
+
     def get_node_url(self):
         return f'{self.codename}.node.{config.DO_DOMAIN}'
 

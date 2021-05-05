@@ -37,7 +37,11 @@
                 <td>{{ op.codename }}</td>
                 <td>{{ op.create_date }}</td>
 								<td>{{ op.region }}</td>
-                <td>{{ op.get_node_url() }}</td>
+                <td>
+									{{ op.get_node_url() }}
+									<br />
+									{{ op.get_node_tor_url() }}
+								</td>
 								<td id="{{ op.codename }}-status"><i class="fa fa-sync-alt fa-spin"></i> Checking</td>
                 <td><a class="is-link" href="https://{{ op.get_node_url() }}/d/0ktA4KDGk/daemon-stats?orgId=1&refresh=30s&from=now-6h&to=now" target="_blank">View Stats</a></td>
               </tr>
