@@ -53,7 +53,7 @@ class Cache(object):
                 url = f'http://{dns}:18081/get_info'
                 r = r_get(url, timeout=6)
                 data = r.json()
-                self.store_data(key_name, 8, json_dumps(data))
+                self.store_data(key_name, 30, json_dumps(data))
                 return data
             except:
                 return {'error': 'true'}
