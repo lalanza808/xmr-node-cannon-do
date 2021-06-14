@@ -25,7 +25,7 @@
 							{% if droplet %}
 							<p>
 								Node: {{ op.get_node_url() }} -
-								<a class="is-link" href="https://{{ op.get_node_url() }}/d/0ktA4KDGk/daemon-stats?orgId=1&refresh=30s&from=now-6h&to=now" target="_blank">Monitoring</a> -
+								<a class="is-link" href="https://{{ op.get_node_url() }}/grafana/d/0ktA4KDGk/daemon-stats?orgId=1&refresh=30s&from=now-6h&to=now" target="_blank">Monitoring</a> -
 								<a class="is-link" href="http://{{ op.get_node_url() }}:18081/get_info" target="_blank">Daemon</a>
 							</p>
 							<p>Use http://{{ op.get_node_url() }}:18081 as your remote node to use this with your XMR wallet.</p>
