@@ -34,8 +34,11 @@ class Cache(object):
                 dns = f'{codename}.node.{config.DO_DOMAIN}'
                 url = f'https://{dns}/tor/'
                 r = r_get(url, timeout=6)
-                data = r.text.strip()
-                self.store_data(key_name, 86400, data)
+                if r.text:
+                    data = r.text.strip()
+                    self.store_data(key_name, 86400, data)
+                else:
+                    data = ''
                 return data
             except:
                 return {'error': 'true'}
