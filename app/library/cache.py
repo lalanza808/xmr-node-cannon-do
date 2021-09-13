@@ -41,7 +41,7 @@ class Cache(object):
                     data = ''
                 return data
             except:
-                return {'error': 'true'}
+                return ''
 
     def get_info(self, codename):
         key_name = f'node_{codename}_info'

@@ -89,6 +89,10 @@ class DigitalOcean(object):
 
     # Droplets
     def create_droplet(self, name, region, extra_vols=[]):
+        # First check that droplet name does not exist
+        de = self.check_droplet_exists(name)
+        if de[0]:
+            return self.show_droplet(de[1])
         data = {
           'name': name,
           'region': region,

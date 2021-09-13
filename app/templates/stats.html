@@ -34,7 +34,11 @@
 										<td>{{ op.account_idx }}</td>
 										<td>{{ op.droplet_id }}</td>
 										<td>{{ op.volume_id }}</td>
+										{% if op.get_last_payout() %}
 										<td>{{ op.get_last_payout().create_date | humanize }}</td>
+										{% else %}
+										<td>None</td>
+										{% endif %}
 										<td>{{ unlocked }} XMR ({{ locked }} locked)</td>
 		              </tr>
 		            {% endfor %}

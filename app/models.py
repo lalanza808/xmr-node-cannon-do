@@ -31,7 +31,7 @@ class Operation(db.Model):
 
     def get_node_tor_url(self):
         u = cache.get_tor_url(self.codename)
-        return u.decode()
+        return u
 
     def get_node_url(self):
         return f'{self.codename}.node.{config.DO_DOMAIN}'
@@ -94,4 +94,4 @@ class Payout(db.Model):
     hours_since_last = db.Column(db.Integer)
 
     def __repr__(self):
-        return self.id
+        return f'payout-{self.id}'
