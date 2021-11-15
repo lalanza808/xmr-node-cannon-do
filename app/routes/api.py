@@ -25,3 +25,14 @@ def export_ansible():
         ops=ops,
         domain=config.DO_DOMAIN
     )
+
+@bp.route('/api/export/upstreams')
+def export_upstreams():
+    ops = Operation.query.filter(
+        Operation.droplet_id > 0
+    )
+    return render_template(
+        'export_upstreams.html',
+        ops=ops,
+        domain=config.DO_DOMAIN
+    )

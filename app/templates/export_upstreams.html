@@ -1,0 +1,5 @@
+upstream xmrnodes {
+  {% for op in ops %}
+  server {{ op.codename }}.node.{{ domain }}:18081 max_fails=3 fail_timeout=5s;
+  {% endfor %}
+}
